@@ -26,11 +26,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $currentlevel = DB::table('users')->where('id', '=', Auth::id());
-        
-        $data = DB::table('users')->where('level', '<=', 3)->get();
+        //get current level of logged in User
+        $currentlevel = DB::table('users')->where('id', '=', Auth::id())->value('level');
 
-        // $data = DB::table('users')->get();
+        //get all user that has level lower than current level
+        $data = DB::table('users')->where('level', '<', $currentlevel)->get();
 
         return view('home', ['users' => $data]);
     }

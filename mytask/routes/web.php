@@ -17,4 +17,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'UserController@index')->name('home');
+
+// DELETE USER
+Route::get('/remove/{id}', 'UserController@destroy')->name('remove');
+
+// GET USER INFORMATION FOR UPDATING
+Route::get('/edit/{id}', 'UserController@edit')->name('edit');
+
+// UPDATE USER
+Route::post('/edit', 'UserController@update')->name('update');
+
+// ADD NEW USER
+Route::get('/add-user', function () {
+    return view('add-user');
+});
+
+Route::post('/add-user', 'UserController@store')->name('store');
