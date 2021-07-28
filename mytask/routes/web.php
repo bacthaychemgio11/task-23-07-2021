@@ -17,20 +17,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'UserController@index')->name('home');
+Route::get('/home', ['middleware' => 'auth', 'uses' => 'UserController@index'])->name('home');
 
 // DELETE USER
-Route::get('/remove/{id}', 'UserController@destroy')->name('remove');
+Route::get('/remove/{id}', ['middleware' => 'auth', 'uses' => 'UserController@destroy'])->name('remove');
 
 // GET USER INFORMATION FOR UPDATING
-Route::get('/edit/{id}', 'UserController@edit')->name('edit');
+Route::get('/edit/{id}', ['middleware' => 'auth', 'uses' => 'UserController@edit'])->name('edit');
 
 // UPDATE USER
-Route::post('/edit', 'UserController@update')->name('update');
+Route::post('/edit', ['middleware' => 'auth', 'uses' => 'UserController@update'])->name('update');
 
 // ADD NEW USER
-Route::get('/add-user', function () {
+Route::get('/add-user', ['middleware' => 'auth', function () {
     return view('add-user');
-});
+}]);
 
-Route::post('/add-user', 'UserController@store')->name('store');
+Route::post('/add-user', ['middleware' => 'auth', 'uses' => 'UserController@store'])->name('store');

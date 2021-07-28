@@ -26,12 +26,26 @@
 
     <div class="col">
         <!-- STATUS MESSAGE -->
-        <!-- @if (session()->has('status-create'))
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{session('status-create')}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @if (Session::has('status-create'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>{{Session::get('status-create')}}</strong>
         </div>
-        @endif -->
+        @endif
+
+        @if (Session::has('status-update'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>{{Session::get('status-update')}}</strong>
+        </div>
+        @endif
+
+        @if (Session::has('status-delete'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>{{Session::get('status-delete')}}</strong>
+        </div>
+        @endif
 
         <table class="table">
             <thead>

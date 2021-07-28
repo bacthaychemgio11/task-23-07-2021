@@ -13,16 +13,34 @@
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" name="name" value="{{$user->name}}" class=" form-control" id="name">
+
+            @if ($errors->has('name'))
+            <span class="help-block">
+                <strong>{{ $errors->first('name') }}</strong>
+            </span>
+            @endif
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="text" name="email" value="{{$user->email}}" class=" form-control" id="email">
+
+            @if ($errors->has('email'))
+            <span class="help-block">
+                <strong>{{ $errors->first('email') }}</strong>
+            </span>
+            @endif
         </div>
 
         <div class="mb-3">
             <label for="level" class="form-label">Level</label>
             <input type="number" name="level" min="0" max="5" value="{{$user->level}}" class="form-control" id="level">
+
+            @if ($errors->has('level'))
+            <span class="help-block">
+                <strong>{{ $errors->first('level') }}</strong>
+            </span>
+            @endif
         </div>
 
         <button style="margin-top: 10px;" type="submit" class="btn btn-primary">Submit</button>

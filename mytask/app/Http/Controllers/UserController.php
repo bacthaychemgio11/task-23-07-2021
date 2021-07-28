@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Dotenv\Validator;
+use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -20,7 +23,7 @@ class UserController extends Controller
         $currentlevel = DB::table('users')->where('id', '=', Auth::id())->value('level');
 
         //get all user that has level lower than current level
-        $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id','asc')->paginate(10);
+        $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->paginate(10);
 
         return view('home', ['users' => $data]);
     }
@@ -44,13 +47,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        //validation không báo lỗi trên trang add-user.
-        // $this->validate($request, [
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|email|max:255|unique:users',
-        //     'password' => 'required|string|min:6|confirmed',
-        //     'level' => 'required|max:5|min:0'
-        // ]);
+        // VALIDATION DATA AND NOTICE IF THERE IS ERROR
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'level' => 'required|max:5|min:0'
+        ]);
 
         DB::table('users')->insert(
             [
@@ -62,9 +65,9 @@ class UserController extends Controller
         );
 
         // ADD STATUS MESSAGE: CREATE SUCCESSFULLY
-        // $request->session()->flash('status-create', 'Create user successfully!');
+        Session::flash('status-create', 'Create user successfully!');
 
-        return redirect('home')->with('status-create','Create user successfully!');
+        return redirect('home');
     }
 
     /**
@@ -100,10 +103,20 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
+        // VALIDATION DATA AND NOTICE IF THERE IS ERROR
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'level' => 'required|max:5|min:0'
+        ]);
+
         // UPDATE INFORMATION FOR USER
         DB::table('users')
             ->where('id', $request->id)
             ->update(['name' => $request->name, 'email' => $request->email, 'level' => $request->level]);
+
+        // ADD STATUS MESSAGE: CREATE SUCCESSFULLY
+        Session::flash('status-update', 'Update user successfully!');
 
         return redirect('home');
     }
@@ -119,8 +132,7 @@ class UserController extends Controller
         DB::table('users')->where('id', '=', $id)->delete();
 
         // CREATE A STATUS MESSAGE TO NOTICE DELETE SUCCESSFULLY
-        //có vấn đề  - không xuất hiện thông báo
-        // session(['delete-status' => true, 'idRemove' => $id]);
+        Session::flash('status-delete', 'Delete user successfully!');
 
         return redirect('home');
     }
