@@ -8,7 +8,7 @@
         {{ csrf_field() }}
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" name="name" class=" form-control" id="name" required>
+            <input type="text" name="name" class=" form-control" id="name" value="{{ old('name') }}" required>
 
             @if ($errors->has('name'))
             <span class="help-block">
@@ -19,7 +19,7 @@
 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="text" name="email" class=" form-control" id="email" required>
+            <input type="text" name="email" class=" form-control" id="email" value="{{ old('email') }}" required>
 
             @if ($errors->has('email'))
             <span class="help-block">
@@ -30,7 +30,7 @@
 
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" name="password" class=" form-control" minlength="6" id="password" required>
+            <input type="password" name="password" class=" form-control" value="{{ old('password') }}" minlength="6" id="password" required>
 
             @if ($errors->has('password'))
             <span class="help-block">
@@ -47,7 +47,7 @@
 
         <div class="mb-3">
             <label for="level" class="form-label">Level</label>
-            <input type="number" name="level" min="0" max="5" value="0" class="form-control" id="level" required>
+            <input type="number" name="level" min="0" max="5" value="5" class="form-control" id="level" required>
 
             @if ($errors->has('level'))
             <span class="help-block">

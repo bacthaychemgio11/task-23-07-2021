@@ -12,7 +12,7 @@
 
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" name="name" value="{{$user->name}}" class=" form-control" id="name">
+            <input type="text" name="name" value="{{ old('name') ? old('name') : $user->name}}" class=" form-control" id="name">
 
             @if ($errors->has('name'))
             <span class="help-block">
@@ -23,7 +23,7 @@
 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="text" name="email" value="{{$user->email}}" class=" form-control" id="email">
+            <input type="text" name="email" value="{{ old('email') ? old('email') : $user->email}}" class=" form-control" id="email">
 
             @if ($errors->has('email'))
             <span class="help-block">
@@ -34,7 +34,7 @@
 
         <div class="mb-3">
             <label for="level" class="form-label">Level</label>
-            <input type="number" name="level" min="0" max="5" value="{{$user->level}}" class="form-control" id="level">
+            <input type="number" name="level" min="0" max="5" value="{{ old('level') ? old('level') : $user->level}}" class="form-control" id="level">
 
             @if ($errors->has('level'))
             <span class="help-block">
