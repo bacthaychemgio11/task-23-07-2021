@@ -34,3 +34,7 @@ Route::get('/add-user', ['middleware' => 'auth', function () {
 }]);
 
 Route::post('/add-user', ['middleware' => 'auth', 'uses' => 'UserController@store'])->name('store');
+
+
+// AJAX HANDLE FORM FOR ADD/EDIT/DELETE USER
+// Route::post('/add-ajax-user', ['middleware' => 'auth', 'uses' => 'AjaxUserController@store'])->name('storeUserAjax');

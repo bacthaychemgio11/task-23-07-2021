@@ -67,7 +67,17 @@ class UserController extends Controller
         // ADD STATUS MESSAGE: CREATE SUCCESSFULLY
         Session::flash('status-create', 'Create user successfully!');
 
-        return redirect('home');
+        // CREATE SUCCESSFUL JSON FOR AJAX
+        //04/08/2021
+        //ho si hung
+        return response()->json(['status' => 'successful'], 200);
+
+        // return redirect('home');
+
+        //03/08/2021
+        // ho si hung
+        // TEST AJAX WHEN CREATE USER
+        // return '<div>OK</div>';
     }
 
     /**

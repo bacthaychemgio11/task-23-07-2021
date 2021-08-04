@@ -18,14 +18,15 @@
                 </div>
 
                 <div class="panel-body">
-                    <a href="/add-user">Add new user</a>
+                    <a href="#" data-toggle="modal" data-target="#modelAddUser">Add new user</a>
                 </div>
+
             </div>
         </div>
     </div>
 
     <div class="col">
-        <!-- STATUS MESSAGE -->
+        <!-- STATUS MESSAGE WHEN CREATE/UPDATE/DELETE USER -->
         @if (Session::has('status-create'))
         <div class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -74,6 +75,78 @@
         </table>
 
         {{ $users->links() }}
+
+    </div>
+
+    <div class="modal fade" id="modelAddUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">ADD USER</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="/home" id='add-user-form' method="post">
+                        {{ csrf_field() }}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" name="name" class=" form-control" id="name" value="{{ old('name') }}" required>
+
+                            @if ($errors->has('name'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('name') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" name="email" class=" form-control" id="email" value="{{ old('email') }}" required>
+
+                            @if ($errors->has('email'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" class=" form-control" value="{{ old('password') }}" minlength="6" id="password" required>
+
+                            @if ($errors->has('password'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password-confirm" class="form-label">Confirm Password</label>
+
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="level" class="form-label">Level</label>
+                            <input type="number" name="level" min="0" max="5" value="5" class="form-control" id="level" required>
+
+                            @if ($errors->has('level'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('level') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
