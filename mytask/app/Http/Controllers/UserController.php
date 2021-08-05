@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Dotenv\Validator;
 use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Validator;
 
 class UserController extends Controller
 {
@@ -47,37 +47,67 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        // VALIDATION DATA AND NOTICE IF THERE IS ERROR
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'level' => 'required|max:5|min:0'
-        ]);
+        // VALIDATION DATA AND NOTICE IF THERE IS ERROR USING VALIDATE METHOD
+        // $this->validate($request, [
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255|unique:users',
+        //     'password' => 'required|string|min:6|confirmed',
+        //     'level' => 'required|max:5|min:0'
+        // ]);
 
-        DB::table('users')->insert(
-            [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password,
-                'level' => $request->level,
-            ]
-        );
+        // DB::table('users')->insert(
+        //     [
+        //         'name' => $request->name,
+        //         'email' => $request->email,
+        //         'password' => $request->password,
+        //         'level' => $request->level,
+        //     ]
+        // );
 
-        // ADD STATUS MESSAGE: CREATE SUCCESSFULLY
-        Session::flash('status-create', 'Create user successfully!');
+        // // ADD STATUS MESSAGE: CREATE SUCCESSFULLY
+        // Session::flash('status-create', 'Create user successfully!');
 
-        // CREATE SUCCESSFUL JSON FOR AJAX
-        //04/08/2021
-        //ho si hung
-        return response()->json(['status' => 'successful'], 200);
+        // // CREATE SUCCESSFUL STATUS JSON FOR AJAX
+        // //04/08/2021
+        // //ho si hung
+        // return response()->json(['status' => 'successful'], 200);
 
         // return redirect('home');
 
-        //03/08/2021
+
+        //-------------------------------------------------------------------
+        // VALIDATION DATA AND NOTICE ERROR USING VALIDATOR FACADE FOR SUPPORT AJAX REQUEST
         // ho si hung
-        // TEST AJAX WHEN CREATE USER
-        // return '<div>OK</div>';
+        // 05/08/2021
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'level' => 'required|between:0,5|integer'
+        ]);
+
+        // $validator = validator($request->all(), [
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255|unique:users',
+        //     'password' => 'required|string|min:6|confirmed',
+        //     'level' => 'required|max:5|min:0'
+        // ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        } else {
+
+            DB::table('users')->insert(
+                [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => $request->password,
+                    'level' => $request->level,
+                ]
+            );
+
+            return response()->json(['status' => 'successful', 'message' => 'Add user successfuly!'], 200);
+        }
     }
 
     /**
