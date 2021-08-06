@@ -70,7 +70,7 @@
                     <td>{{ $user->level }}</td>
                     <td>
                         <a href="#" data-toggle="modal" data-target="#modelEditUser"> Edit</a>
-                        <a href="/remove/{{$user->id}}"> Delete</a>
+                        <a id="deleteUser" data-id="{{$user->id}}"> Delete</a>
                     </td>
                 </tr>
                 @endforeach
@@ -96,33 +96,16 @@
                             <label for="name" class="form-label">Name</label>
                             <input type="text" name="name" class=" form-control" id="name" value="{{ old('name') }}" required>
 
-                            @if ($errors->has('name'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                            @endif
                         </div>
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="text" name="email" class=" form-control" id="email" value="{{ old('email') }}" required>
-
-                            @if ($errors->has('email'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
-                            @endif
                         </div>
 
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" name="password" class=" form-control" value="{{ old('password') }}" minlength="6" id="password" required>
-
-                            @if ($errors->has('password'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
-                            @endif
                         </div>
 
                         <div class="mb-3">
@@ -134,12 +117,6 @@
                         <div class="mb-3">
                             <label for="level" class="form-label">Level</label>
                             <input type="number" name="level" min="0" max="5" value="5" class="form-control" id="level" required>
-
-                            @if ($errors->has('level'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('level') }}</strong>
-                            </span>
-                            @endif
                         </div>
 
                         <div class="modal-footer">
@@ -164,22 +141,22 @@
                     <form action="" id='edit-user-form' method="post">
                         {{ csrf_field() }}
                         <div class="mb-3">
-                            <input type="hidden" class="form-control" name="id" value="{{$user->id}}">
+                            <input type="hidden" class="form-control" id="editID" name="id" value="{{$user->id}}">
                         </div>
 
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" name="name" value="{{ old('name') ? old('name') : $user->name}}" class=" form-control" id="name">
+                            <label for="editName" class="form-label">Name</label>
+                            <input type="text" name="name" value="{{$user->name}}" class=" form-control" id="editName">
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="text" name="email" value="{{ old('email') ? old('email') : $user->email}}" class=" form-control" id="email">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="text" name="email" value="{{$user->email}}" class=" form-control" id="editEmail">
                         </div>
 
                         <div class="mb-3">
-                            <label for="level" class="form-label">Level</label>
-                            <input type="number" name="level" min="0" max="5" value="{{ old('level') ? old('level') : $user->level}}" class="form-control" id="level">
+                            <label for="editLevel" class="form-label">Level</label>
+                            <input type="number" name="level" min="0" max="5" value="{{$user->level}}" class="form-control" id="editLevel">
                         </div>
 
                         <div class="modal-footer">

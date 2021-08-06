@@ -79,19 +79,13 @@ class UserController extends Controller
         // VALIDATION DATA AND NOTICE ERROR USING VALIDATOR FACADE FOR SUPPORT AJAX REQUEST
         // ho si hung
         // 05/08/2021
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'level' => 'required|between:0,5|integer'
         ]);
-
-        // $validator = validator($request->all(), [
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|email|max:255|unique:users',
-        //     'password' => 'required|string|min:6|confirmed',
-        //     'level' => 'required|max:5|min:0'
-        // ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -143,22 +137,27 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
+        // 06/08/2021
+        //UPDATE FUCNTION FOR AJAX
+        // HO SI HUNG
+
         // VALIDATION DATA AND NOTICE IF THERE IS ERROR
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'level' => 'required|max:5|min:0'
+            'level' => 'required|between:0,5|integer'
         ]);
 
-        // UPDATE INFORMATION FOR USER
-        DB::table('users')
-            ->where('id', $request->id)
-            ->update(['name' => $request->name, 'email' => $request->email, 'level' => $request->level]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        } else {
+            // UPDATE INFORMATION FOR USER
+            DB::table('users')
+                ->where('id', $request->id)
+                ->update(['name' => $request->name, 'email' => $request->email, 'level' => $request->level]);
 
-        // ADD STATUS MESSAGE: CREATE SUCCESSFULLY
-        Session::flash('status-update', 'Update user successfully!');
-
-        return redirect('home');
+            return response()->json(['status' => 'successful', 'message' => 'Edit user successfuly!', 'oldData' => $request->all()], 200);
+        }
     }
 
     /**
@@ -167,13 +166,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($request)
     {
-        DB::table('users')->where('id', '=', $id)->delete();
+        DB::table('users')->where('id', '=', $request->id)->delete();
 
-        // CREATE A STATUS MESSAGE TO NOTICE DELETE SUCCESSFULLY
-        Session::flash('status-delete', 'Delete user successfully!');
-
-        return redirect('home');
+        return response()->json(['status' => 'successful', 'message' => 'Delete user successfuly!'], 200);
     }
 }

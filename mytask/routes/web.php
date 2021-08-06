@@ -20,10 +20,7 @@ Auth::routes();
 Route::get('/home', ['middleware' => 'auth', 'uses' => 'UserController@index'])->name('home');
 
 // DELETE USER
-Route::get('/remove/{id}', ['middleware' => 'auth', 'uses' => 'UserController@destroy'])->name('remove');
-
-// GET USER INFORMATION FOR UPDATING
-Route::get('/edit/{id}', ['middleware' => 'auth', 'uses' => 'UserController@edit'])->name('edit');
+Route::get('/remove', ['middleware' => 'auth', 'uses' => 'UserController@destroy'])->name('remove');
 
 // UPDATE USER
 Route::post('/edit', ['middleware' => 'auth', 'uses' => 'UserController@update'])->name('update');

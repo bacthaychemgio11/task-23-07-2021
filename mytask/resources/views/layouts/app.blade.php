@@ -83,28 +83,10 @@
 
     <!-- SCRIPT FOR HANDLING AJAX REQUEST -->
     <script>
-        const form = document.querySelector('#add-user-form');
-        const name = document.querySelector('#name');
-        const email = document.querySelector('#email');
-        const password = document.querySelector('#password');
-        const passwordConfirm = document.querySelector('#password-confirm');
-        const level = document.querySelector('#level');
-        const addUser = document.querySelector('#addUser');
-
-        let _token = $('meta[name="csrf-token"]').attr('content');
-
         //FUNCTION TO SEND REQUEST
-        async function sendRequest() {
-            const data = {
-                name: name.value,
-                email: email.value,
-                password: password.value,
-                password_confirmation: passwordConfirm.value,
-                level: level.value,
-                _token: _token
-            };
+        async function sendRequest(url, data) {
 
-            const result = await fetch('/add-user', {
+            const result = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8',
@@ -119,30 +101,68 @@
         // FUNCTION TO CREATE ERROR MESSAGE
         function createErrorHTML(message) {
             return `<span class="help-block">
-                                <strong>${message}</strong>
-                            </span>`;
+                        <strong>${message}</strong>
+                    </span>`;
         }
 
-        addUser.addEventListener('click', async function(event) {
+        // SENDING REQUEST FOR ADD USER
+        const form = document.querySelector('#add-user-form');
+
+        form.addEventListener('submit', async function(event) {
+            let name = document.querySelector('#name');
+            let email = document.querySelector('#email');
+            let password = document.querySelector('#password');
+            let passwordConfirm = document.querySelector('#password-confirm');
+            let level = document.querySelector('#level');
+
+            let _token = $('meta[name="csrf-token"]').attr('content');
+
+            const data = {
+                name: name.value,
+                email: email.value,
+                password: password.value,
+                password_confirmation: passwordConfirm.value,
+                level: level.value,
+                _token: _token
+            };
+
             event.preventDefault();
 
-            const result = await sendRequest();
+            const result = await sendRequest('/add-user', data);
 
             if (result.status) {
                 // hide modal box
                 $('#modelAddUser').modal('hide');
 
-                // add message for add user successfully
+                // add message for adding user successfully
                 const box = document.querySelector('#messageBoxContainer');
                 box.innerHTML = `<div class="alert alert-success alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <strong>${result.message}</strong>
                 </div>`;
 
+                // RELOAD PAGE
+                location.reload(false);
             } else {
                 // SHOW ERROR IN MODAL BOX
                 $('#modelAddUser').modal('show');
 
+                // Kiểm tra lỗi có tồn tại hay không, nếu có thì xóa lôi cũ, để xuất thông báo 
+                // Tránh thường hợp xuất nhiều thông báo
+                if (email.parentElement.querySelector('.help-block') != null) {
+                    email.parentElement.removeChild(email.parentElement.querySelector('.help-block'));
+                }
+                if (password.parentElement.querySelector('.help-block') != null) {
+                    password.parentElement.removeChild(password.parentElement.querySelector('.help-block'));
+                }
+                if (level.parentElement.querySelector('.help-block') != null) {
+                    level.parentElement.removeChild(level.parentElement.querySelector('.help-block'));
+                }
+                if (name.parentElement.querySelector('.help-block') != null) {
+                    name.parentElement.removeChild();
+                }
+
+                // Hiện thông báo ra màn hình
                 if (result.errors.email) {
                     email.parentElement.innerHTML += createErrorHTML(result.errors.email);
                 }
@@ -155,8 +175,106 @@
                 if (result.errors.name) {
                     name.parentElement.innerHTML += createErrorHTML(result.errors.name);
                 }
+            }
+        });
 
-                console.log(result)
+        // SENDING REQUEST FOR EDIT USER
+        const editForm = document.querySelector('#edit-user-form');
+
+        editForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            let name = document.querySelector('#editName');
+            let email = document.querySelector('#editEmail');
+            let id = document.querySelector('#editID');
+            let level = document.querySelector('#editLevel');
+
+            let _token = $('meta[name="csrf-token"]').attr('content');
+
+            const data = {
+                name: name.value,
+                email: email.value,
+                level: level.value,
+                id: id.value,
+                _token: _token
+            };
+
+            const result = await sendRequest('/edit', data);
+
+            if (result.status) {
+                // hide modal box
+                $('#modelEditUser').modal('hide');
+
+                // add message for edit user successfully
+                const box = document.querySelector('#messageBoxContainer');
+                box.innerHTML = `<div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>${result.message}</strong>
+                </div>`;
+
+                // RELOAD PAGE
+                location.reload(false);
+            } else {
+                // SHOW ERROR IN MODAL BOX
+                $('#modelEditUser').modal('show');
+
+                // Kiểm tra lỗi có tồn tại hay không, nếu có thì xóa lôi cũ, để xuất thông báo 
+                // Tránh thường hợp xuất nhiều thông báo
+                if (email.parentElement.querySelector('.help-block') != null) {
+                    email.parentElement.removeChild(email.parentElement.querySelector('.help-block'));
+                }
+                if (level.parentElement.querySelector('.help-block') != null) {
+                    level.parentElement.removeChild(level.parentElement.querySelector('.help-block'));
+                }
+                if (name.parentElement.querySelector('.help-block') != null) {
+                    name.parentElement.removeChild();
+                }
+
+                // Hiện thông báo ra màn hình
+                if (result.errors.email) {
+                    email.parentElement.innerHTML += createErrorHTML(result.errors.email);
+                    email.value = result.oldData.email;
+                }
+                if (result.errors.level) {
+                    level.parentElement.innerHTML += createErrorHTML(result.errors.level);
+                    email.value = result.oldData.email;
+                }
+                if (result.errors.name) {
+                    name.parentElement.innerHTML += createErrorHTML(result.errors.name);
+                    email.value = result.oldData.email;
+                }
+            }
+        });
+
+        // SENDING REQUEST FOR DELETE USER
+        const deleteUser = document.querySelector('#deleteUser');
+
+        deleteUser.addEventListener('click', async function() {
+            let id = deleteUser.dataset.id;
+            console.log(id);
+            alert(test)
+            let _token = $('meta[name="csrf-token"]').attr('content');
+
+            const data = {
+                id: id.value,
+                _token: _token
+            };
+
+            const result = await sendRequest('/remove', data);
+
+            if (result.status) {
+                // add message for edit user successfully
+                const box = document.querySelector('#messageBoxContainer');
+                box.innerHTML = `<div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>${result.message}</strong>
+                        </div>`;
+
+                // RELOAD PAGE
+                location.reload(false);
+            } else {
+                // SHOW ERROR IN MODAL BOX
+                console.log('Remove item failed');
             }
         });
     </script>
