@@ -70,7 +70,7 @@
                     <td>{{ $user->level }}</td>
                     <td>
                         <a href="#" data-toggle="modal" data-target="#modelEditUser"> Edit</a>
-                        <a id="deleteUser" data-id="{{$user->id}}"> Delete</a>
+                        <a class="deleteUser" data-id="{{$user->id}}" href="#">Delete</a>
                     </td>
                 </tr>
                 @endforeach

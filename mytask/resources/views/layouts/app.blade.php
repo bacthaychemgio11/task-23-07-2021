@@ -134,15 +134,15 @@
                 // hide modal box
                 $('#modelAddUser').modal('hide');
 
+                // RELOAD PAGE
+                location.reload(false);
+
                 // add message for adding user successfully
                 const box = document.querySelector('#messageBoxContainer');
                 box.innerHTML = `<div class="alert alert-success alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <strong>${result.message}</strong>
                 </div>`;
-
-                // RELOAD PAGE
-                location.reload(false);
             } else {
                 // SHOW ERROR IN MODAL BOX
                 $('#modelAddUser').modal('show');
@@ -205,15 +205,15 @@
                 // hide modal box
                 $('#modelEditUser').modal('hide');
 
+                // RELOAD PAGE
+                location.reload(false);
+
                 // add message for edit user successfully
                 const box = document.querySelector('#messageBoxContainer');
                 box.innerHTML = `<div class="alert alert-success alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <strong>${result.message}</strong>
                 </div>`;
-
-                // RELOAD PAGE
-                location.reload(false);
             } else {
                 // SHOW ERROR IN MODAL BOX
                 $('#modelEditUser').modal('show');
@@ -247,35 +247,40 @@
         });
 
         // SENDING REQUEST FOR DELETE USER
-        const deleteUser = document.querySelector('#deleteUser');
+        const deleteUser = document.querySelectorAll('.deleteUser');
 
-        deleteUser.addEventListener('click', async function() {
-            let id = deleteUser.dataset.id;
-            console.log(id);
-            alert(test)
-            let _token = $('meta[name="csrf-token"]').attr('content');
+        deleteUser.forEach(del => {
+            del.addEventListener('click', async function() {
+                let id = this.dataset.id;
 
-            const data = {
-                id: id.value,
-                _token: _token
-            };
+                let option = confirm('Do you want to delete this user?');
 
-            const result = await sendRequest('/remove', data);
+                if (option == true) {
+                    let _token = $('meta[name="csrf-token"]').attr('content');
 
-            if (result.status) {
-                // add message for edit user successfully
-                const box = document.querySelector('#messageBoxContainer');
-                box.innerHTML = `<div class="alert alert-success alert-dismissible" role="alert">
+                    const data = {
+                        id: id,
+                        _token: _token
+                    };
+
+                    const result = await sendRequest('/remove', data);
+
+                    if (result.status) {
+                        // add message for edit user successfully
+                        const box = document.querySelector('#messageBoxContainer');
+                        box.innerHTML = `<div class="alert alert-success alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <strong>${result.message}</strong>
                         </div>`;
 
-                // RELOAD PAGE
-                location.reload(false);
-            } else {
-                // SHOW ERROR IN MODAL BOX
-                console.log('Remove item failed');
-            }
+                        // RELOAD PAGE
+                        location.reload(false);
+                    } else {
+                        // SHOW ERROR IN MODAL BOX
+                        console.log('Remove item failed');
+                    }
+                }
+            });
         });
     </script>
 </body>

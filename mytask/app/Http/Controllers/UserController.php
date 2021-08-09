@@ -166,7 +166,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($request)
+    public function destroy(Request $request)
     {
         DB::table('users')->where('id', '=', $request->id)->delete();
 
