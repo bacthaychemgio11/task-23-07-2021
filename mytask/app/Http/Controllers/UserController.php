@@ -25,7 +25,24 @@ class UserController extends Controller
         //get all user that has level lower than current level
         $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->paginate(10);
 
-        return view('home', ['users' => $data]);
+        // return view('home', ['users' => $data]);
+
+        // UPDATE FUNCTION TO RETURN VIEW
+        // USE FOR REACT
+        // 12/08/2021
+        return view('home');
+    }
+
+    public function getUsers()
+    {
+        //get current level of logged in User
+        $currentlevel = DB::table('users')->where('id', '=', Auth::id())->value('level');
+
+        //get all user that has level lower than current level
+        $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->paginate(10);
+
+        // return response in json type
+        return response()->json(['data' => $data], 200);
     }
 
     /**

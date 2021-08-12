@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', ['middleware' => 'auth', 'uses' => 'UserController@index'])->name('home');
 
+// GET USER
+Route::get('/get-user', ['middleware' => 'auth', 'uses' => 'UserController@getUsers'])->name('get-users');
+
 // DELETE USER
 Route::post('/remove', ['middleware' => 'auth', 'uses' => 'UserController@destroy'])->name('remove');
 

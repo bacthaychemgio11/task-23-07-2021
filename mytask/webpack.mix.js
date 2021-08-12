@@ -10,6 +10,8 @@ let mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+// CHANGE TO REACT
+// 11/08/2021
+mix.react('resources/assets/js/app.js', 'public/js')
+   .sass('resources/assets/sass/app.scss', 'public/css')
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');

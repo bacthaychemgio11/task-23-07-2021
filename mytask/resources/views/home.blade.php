@@ -51,7 +51,7 @@
         </div>
 
 
-        <table class="table">
+        <!-- <table class="table">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -77,7 +77,11 @@
             </tbody>
         </table>
 
-        {{ $users->links() }}
+        {{ $users->links() }} -->
+
+        <!-- react 12/08/2021 -->
+        <div id="example"></div>
+        <script src="{{ mix('js/app.js') }}"></script>
 
     </div>
 

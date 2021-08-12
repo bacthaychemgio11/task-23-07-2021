@@ -12,9 +12,11 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom-css.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <!-- <link href="{{ asset('css/custom-css.css') }}" rel="stylesheet"> -->
 
+    <!-- STYLES FOR REACT -->
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -22,7 +24,6 @@
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-
                     <!-- Collapsed Hamburger -->
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
                         <span class="sr-only">Toggle Navigation</span>
@@ -79,7 +80,10 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <!-- <script src="{{ asset('js/app.js') }}"></script> -->
+
+    <!-- react 12/08/2021 -->
+    <div id="example"></div>
 
     <!-- SCRIPT FOR HANDLING AJAX REQUEST -->
     <script>
