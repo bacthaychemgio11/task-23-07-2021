@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', ['middleware' => 'auth', 'uses' => 'UserController@index'])->name('home');
 
 // GET USER
-Route::get('/get-user', ['middleware' => 'auth', 'uses' => 'UserController@getUsers'])->name('get-users');
+Route::get('/get-users', ['middleware' => 'auth', 'uses' => 'UserController@getUsers'])->name('get-users');
 
 // DELETE USER
 Route::post('/remove', ['middleware' => 'auth', 'uses' => 'UserController@destroy'])->name('remove');
@@ -35,6 +35,3 @@ Route::get('/add-user', ['middleware' => 'auth', function () {
 
 Route::post('/add-user', ['middleware' => 'auth', 'uses' => 'UserController@store'])->name('store');
 
-
-// AJAX HANDLE FORM FOR ADD/EDIT/DELETE USER
-// Route::post('/add-ajax-user', ['middleware' => 'auth', 'uses' => 'AjaxUserController@store'])->name('storeUserAjax');

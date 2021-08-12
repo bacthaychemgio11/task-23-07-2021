@@ -19,11 +19,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        //get current level of logged in User
-        $currentlevel = DB::table('users')->where('id', '=', Auth::id())->value('level');
+        // //get current level of logged in User
+        // $currentlevel = DB::table('users')->where('id', '=', Auth::id())->value('level');
 
-        //get all user that has level lower than current level
-        $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->paginate(10);
+        // //get all user that has level lower than current level
+        // $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->paginate(10);
 
         // return view('home', ['users' => $data]);
 

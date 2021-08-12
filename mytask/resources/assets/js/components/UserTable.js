@@ -40,55 +40,10 @@ function UserTable() {
         {
             title: 'Actions',
             dataIndex: 'actions',
-            render: (actions) => (
-                <div>
-                    {actions.map((action) => {
-                        if (action == 'delete') {
-                            return (
-                                <a className='btnDelete' title='Delete' key={{ action }} href="#"><FaRegTrashAlt></FaRegTrashAlt></a>
-                            );
-                        } else {
-                            return (<a className='btnEdit' title='Edit' key={{ action }} href="#"><FaEdit></FaEdit></a>);
-                        }
-                    })}
-                </div>
-            )
-        },
-    ];
-
-    // data demo
-    const data = [
-        {
-            key: '1',
-            id: '1',
-            name: 'Hung',
-            email: 'hung@gmail.com',
-            level: 4,
-            actions: ['delete', 'edit'],
-        },
-        {
-            key: '2',
-            id: '5',
-            name: 'John',
-            email: 'john@gmail.com',
-            level: 0,
-            actions: ['delete', 'edit'],
-        },
-        {
-            key: '3',
-            id: '15',
-            name: 'Yum',
-            email: 'yum@gmail.com',
-            level: 1,
-            actions: ['delete', 'edit'],
-        },
-        {
-            key: '4',
-            id: '25',
-            name: 'Roar',
-            email: 'roar@gmail.com',
-            level: 3,
-            actions: ['delete', 'edit'],
+            render: () => <div>
+                <a className='btnDelete' title='Delete' href="#"><FaRegTrashAlt></FaRegTrashAlt></a>
+                <a className='btnEdit' title='Edit' href="#"><FaEdit></FaEdit></a>
+            </div>
         },
     ];
 
@@ -111,11 +66,11 @@ function UserTable() {
 
     useEffect(async () => {
         const getData = await sendRequest();
-        // setDataUser(getData.data);
 
-        setDataUser(data);
+        setDataUser(getData.data.data);
     }, []);
-    console.log(dataUser)
+    // console.log(dataUser)
+
     return (
         <div>
             <Table className='myUserTable' columns={columns} dataSource={dataUser} />
