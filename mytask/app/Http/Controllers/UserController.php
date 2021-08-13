@@ -19,18 +19,18 @@ class UserController extends Controller
      */
     public function index()
     {
-        // //get current level of logged in User
-        // $currentlevel = DB::table('users')->where('id', '=', Auth::id())->value('level');
+        //get current level of logged in User
+        $currentlevel = DB::table('users')->where('id', '=', Auth::id())->value('level');
 
-        // //get all user that has level lower than current level
-        // $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->paginate(10);
+        //get all user that has level lower than current level
+        $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->paginate(10);
 
-        // return view('home', ['users' => $data]);
+        return view('home', ['users' => $data]);
 
         // UPDATE FUNCTION TO RETURN VIEW
         // USE FOR REACT
         // 12/08/2021
-        return view('home');
+        // return view('home');
     }
 
     public function getUsers()
@@ -39,7 +39,7 @@ class UserController extends Controller
         $currentlevel = DB::table('users')->where('id', '=', Auth::id())->value('level');
 
         //get all user that has level lower than current level
-        $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->paginate(10);
+        $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->get();
 
         // return response in json type
         return response()->json(['data' => $data], 200);
@@ -138,11 +138,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $data = DB::table('users')->where('id', '=', $id)->first();
+        $data = DB::table('users')->where('id', '=', $request->id)->first();
 
-        return view('edit', ['user' => $data]);
+        return response()->json(['data' => $data], 200);
     }
 
     /**

@@ -35,3 +35,5 @@ Route::get('/add-user', ['middleware' => 'auth', function () {
 
 Route::post('/add-user', ['middleware' => 'auth', 'uses' => 'UserController@store'])->name('store');
 
+// GETTING USER INFORMATION FOR EDITTING
+Route::post('/getInforUser', ['middleware' => 'auth', 'uses' => 'UserController@edit'])->name('getUserInfo');

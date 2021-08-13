@@ -14,4 +14,5 @@ let mix = require('laravel-mix');
 // 11/08/2021
 mix.react('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
+   .styles('resources/assets/custom-css/custom-css.css', 'public/css/custom-css.css');
 

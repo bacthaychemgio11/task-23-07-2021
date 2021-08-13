@@ -1,7 +1,7 @@
 // import { Row, Col } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { Table } from 'antd';
+import { Table, Popconfirm, message } from 'antd';
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 
@@ -39,10 +39,18 @@ function UserTable() {
         },
         {
             title: 'Actions',
-            dataIndex: 'actions',
-            render: () => <div>
-                <a className='btnDelete' title='Delete' href="#"><FaRegTrashAlt></FaRegTrashAlt></a>
-                <a className='btnEdit' title='Edit' href="#"><FaEdit></FaEdit></a>
+            dataIndex: 'id',
+            render: (id) => <div>
+                <Popconfirm
+                    title="Are you sure to delete this task?"
+                    onConfirm={() => { confirm(id) }}
+                    onCancel={cancel}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <a className='btnDelete' title='Delete' href="#"><FaRegTrashAlt></FaRegTrashAlt></a>
+                </Popconfirm>
+                <a className='btnEdit' onClick={() => { getUserInformationForEditing(id) }} title='Edit' href="#" data-id={`${id}`} data-toggle="modal" data-target="#modelEditUser"><FaEdit></FaEdit></a>
             </div>
         },
     ];
@@ -50,7 +58,7 @@ function UserTable() {
     // ACTUAL DATA
     const [dataUser, setDataUser] = useState([]);
 
-    //FUNCTION TO SEND REQUEST
+    //FUNCTION TO SEND REQUEST TO GET ALL USER
     async function sendRequest() {
 
         const result = await fetch('/get-users', {
@@ -67,13 +75,67 @@ function UserTable() {
     useEffect(async () => {
         const getData = await sendRequest();
 
-        setDataUser(getData.data.data);
+        setDataUser(getData.data);
     }, []);
-    // console.log(dataUser)
+
+    // FUNTION TO GET USER INFORMATION TO EDIT
+    async function getUserInformationForEditing(id) {
+        let _token = $('meta[name="csrf-token"]').attr('content');
+        const data = {
+            id: id,
+            _token: _token
+        }
+
+        const result = await fetch('/getInforUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Accept': 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify(data)
+        });
+
+        return result.json();
+    }
+
+    // FUNTION TO GET USER INFORMATION TO EDIT
+    async function deleteUser(id) {
+        let _token = $('meta[name="csrf-token"]').attr('content');
+        const data = {
+            id: id,
+            _token: _token
+        }
+
+        const result = await fetch('/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Accept': 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify(data)
+        });
+
+        return result.json();
+    }
+
+    // confirm box
+    async function confirm(id) {
+        deleteUser(id);
+
+        const getData = await sendRequest();
+
+        setDataUser(getData.data);
+
+        message.success('Delete User Successfully');
+    }
+
+    function cancel(e) {
+        console.log(e);
+    }
 
     return (
         <div>
-            <Table className='myUserTable' columns={columns} dataSource={dataUser} />
+            <Table className='myUserTable' pagination={{ pageSize: 10 }} columns={columns} dataSource={dataUser} />
         </div>
     );
 }
@@ -81,6 +143,6 @@ function UserTable() {
 export default UserTable;
 
 // RENDER COMPONENT
-if (document.getElementById('example')) {
-    ReactDOM.render(<UserTable />, document.getElementById('example'));
+if (document.getElementById('userTable')) {
+    ReactDOM.render(<UserTable />, document.getElementById('userTable'));
 }
