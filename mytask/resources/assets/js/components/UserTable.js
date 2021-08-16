@@ -10,13 +10,17 @@ function UserTable() {
         {
             title: 'ID',
             dataIndex: 'id',
+            sorter: {
+                compare: (a, b) => a.id - b.id,
+                multiple: 1,
+            },
         },
         {
             title: 'Name',
             dataIndex: 'name',
             sorter: {
                 compare: (a, b) => a.name - b.name,
-                multiple: 3,
+                multiple: 2,
             },
             ellipsis: true,
         },
@@ -25,7 +29,7 @@ function UserTable() {
             dataIndex: 'email',
             sorter: {
                 compare: (a, b) => a.email - b.email,
-                multiple: 2,
+                multiple: 3,
             },
             ellipsis: true,
         },
@@ -77,9 +81,26 @@ function UserTable() {
 
         setDataUser(getData.data);
     }, []);
-
+    console.log(dataUser)
     // FUNTION TO GET USER INFORMATION TO EDIT
     async function getUserInformationForEditing(id) {
+        let dataResult = await sendInforRequest(id);
+
+        let editID = document.querySelector('#editID');
+        editID.value = dataResult.data.id;
+
+        let editName = document.querySelector('#editName');
+        editName.value = dataResult.data.name;
+
+        let editEmail = document.querySelector('#editEmail');
+        editEmail.value = dataResult.data.email;
+
+        let editLevel = document.querySelector('#editLevel');
+        editLevel.value = dataResult.data.level;
+    }
+
+    // FUNCTION TO SEND REQUEST TO GET INFORMATION OF USER
+    async function sendInforRequest(id) {
         let _token = $('meta[name="csrf-token"]').attr('content');
         const data = {
             id: id,

@@ -117,7 +117,7 @@ class UserController extends Controller
                 ]
             );
 
-            return response()->json(['status' => 'successful', 'message' => 'Add user successfuly!'], 200);
+            return response()->json(['status' => 'successful', 'message' => 'Add user successfuly! Reload page to see result.'], 200);
         }
     }
 
@@ -173,7 +173,7 @@ class UserController extends Controller
                 ->where('id', $request->id)
                 ->update(['name' => $request->name, 'email' => $request->email, 'level' => $request->level]);
 
-            return response()->json(['status' => 'successful', 'message' => 'Edit user successfuly!', 'oldData' => $request->all()], 200);
+            return response()->json(['status' => 'successful', 'message' => 'Update user successfuly! Reload page to see result.', 'oldData' => $request->all()], 200);
         }
     }
 

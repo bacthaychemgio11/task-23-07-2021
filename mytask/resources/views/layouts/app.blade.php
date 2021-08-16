@@ -135,7 +135,7 @@
                 $('#modelAddUser').modal('hide');
 
                 // RELOAD PAGE
-                location.reload(false);
+                // location.reload(false);
 
                 // add message for adding user successfully
                 const box = document.querySelector('#messageBoxContainer');
@@ -246,76 +246,6 @@
             }
         });
 
-        // SENDING REQUEST FOR DELETE USER
-        const deleteUser = document.querySelectorAll('.deleteUser');
-
-        deleteUser.forEach(del => {
-            del.addEventListener('click', async function() {
-                let id = this.dataset.id;
-
-                let option = confirm('Do you want to delete this user?');
-
-                if (option == true) {
-                    let _token = $('meta[name="csrf-token"]').attr('content');
-
-                    const data = {
-                        id: id,
-                        _token: _token
-                    };
-
-                    const result = await sendRequest('/remove', data);
-
-                    if (result.status) {
-                        // add message for edit user successfully
-                        const box = document.querySelector('#messageBoxContainer');
-                        box.innerHTML = `<div class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>${result.message}</strong>
-                        </div>`;
-
-                        // RELOAD PAGE
-                        // location.reload(false);
-                    } else {
-                        // SHOW ERROR IN MODAL BOX
-                        console.log('Remove item failed');
-                    }
-                }
-            });
-        });
-
-        // TEST CODE 13/08/2021
-        //K NHẬN ĐƯỢC CÁC btnEdit do React render
-        // ADD EVENTs FOR BTN-EDIT (REACT)
-        const btnEdits = document.querySelectorAll('.btnEdit');
-        console.log(btnEdits)
-
-        // FUNTION TO GET USER INFORMATION TO EDIT
-        // async function getUserInformationForEditing(id) {
-        //     let _token = $('meta[name="csrf-token"]').attr('content');
-        //     const data = {
-        //         id: id,
-        //         _token: _token
-        //     }
-
-        //     const result = await fetch('/getInforUser', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json;charset=utf-8',
-        //             'Accept': 'application/json;charset=UTF-8'
-        //         },
-        //         body: JSON.stringify(data)
-        //     });
-
-        //     return result.json();
-        // }
-
-        // btnEdits.forEach(btnEdit => {
-        //     btnEdit.addEventListener('click', async () => {
-        //         const result = await getUserInformationForEditing(this.dataset.id);
-
-        //         console.log(result);
-        //     })
-        // });
     </script>
 </body>
 
