@@ -81,7 +81,7 @@ function UserTable() {
 
         setDataUser(getData.data);
     }, []);
-    console.log(dataUser)
+
     // FUNTION TO GET USER INFORMATION TO EDIT
     async function getUserInformationForEditing(id) {
         let dataResult = await sendInforRequest(id);

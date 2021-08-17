@@ -33,6 +33,9 @@ class UserController extends Controller
         // return view('home');
     }
 
+    // GET ALL USER HAD LEVEL LOWER THAN CURRENT USER'S LEVEL
+    // ALSO SEND NUMBERS OF USER OF EACH LEVEL
+    // UPDATE FUCTION AT 17/08/2021
     public function getUsers()
     {
         //get current level of logged in User
@@ -41,8 +44,11 @@ class UserController extends Controller
         //get all user that has level lower than current level
         $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->get();
 
+        //GET NUMBERS OF USER OF EACH LEVEL
+        $chartData = DB::table('users')->select(DB::raw('level, count(*) as value'))->groupBy('level')->get();
+
         // return response in json type
-        return response()->json(['data' => $data], 200);
+        return response()->json(['data' => $data, 'chartData' => $chartData], 200);
     }
 
     /**
@@ -63,40 +69,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
-        // VALIDATION DATA AND NOTICE IF THERE IS ERROR USING VALIDATE METHOD
-        // $this->validate($request, [
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|email|max:255|unique:users',
-        //     'password' => 'required|string|min:6|confirmed',
-        //     'level' => 'required|max:5|min:0'
-        // ]);
-
-        // DB::table('users')->insert(
-        //     [
-        //         'name' => $request->name,
-        //         'email' => $request->email,
-        //         'password' => $request->password,
-        //         'level' => $request->level,
-        //     ]
-        // );
-
-        // // ADD STATUS MESSAGE: CREATE SUCCESSFULLY
-        // Session::flash('status-create', 'Create user successfully!');
-
-        // // CREATE SUCCESSFUL STATUS JSON FOR AJAX
-        // //04/08/2021
-        // //ho si hung
-        // return response()->json(['status' => 'successful'], 200);
-
-        // return redirect('home');
-
-
         //-------------------------------------------------------------------
         // VALIDATION DATA AND NOTICE ERROR USING VALIDATOR FACADE FOR SUPPORT AJAX REQUEST
         // ho si hung
         // 05/08/2021
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',

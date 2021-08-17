@@ -12,6 +12,7 @@ import {
     VideoCameraOutlined,
 } from '@ant-design/icons';
 import UserTable from './UserTable.js';
+import ChartLevelCount from './ChartLevelCount.js';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -60,6 +61,17 @@ if (document.getElementById('layout')) {
                 </Header>
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                     <div className="site-layout-background" style={{ padding: 24, textAlign: 'center' }}>
+                        {/* CHART AND USER INFORMATION */}
+                        <div className='chartAndInfor'>
+                            <div className='chartContainer'>
+                                <h3 style={{ 'padding': '10px 0' }}>Users Statistic By Level</h3>
+                                <ChartLevelCount></ChartLevelCount>
+                            </div>
+
+                            <div className='userInforContainer'>
+                                <h3>User Information</h3>
+                            </div>
+                        </div>
                         <UserTable></UserTable>
                     </div>
                 </Content>

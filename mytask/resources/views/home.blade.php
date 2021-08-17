@@ -3,10 +3,6 @@
 @section('content')
 <!-- NAVIGATION MENU -->
 <!-- 16/08/2021 -->
-<!-- <div id="navigationMenu"></div> -->
-<div id="layout"></div>
-<!-- REACT 12/08/2021 -->
-<script src="{{ mix('js/app.js') }}"></script>
 
 <div class="container">
     <div class="col">
@@ -123,4 +119,9 @@
         </div>
     </div>
 </div>
+
+<div id="layout"></div>
+<!-- REACT 12/08/2021 -->
+<script src="{{ mix('js/app.js') }}"></script>
+
 @endsection
