@@ -13,6 +13,7 @@ import {
 } from '@ant-design/icons';
 import UserTable from './UserTable.js';
 import ChartLevelCount from './ChartLevelCount.js';
+import InforAndStatistic from './InforAndStatistic.js';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -69,7 +70,7 @@ if (document.getElementById('layout')) {
                             </div>
 
                             <div className='userInforContainer'>
-                                <h3>User Information</h3>
+                                <InforAndStatistic></InforAndStatistic>
                             </div>
                         </div>
                         <UserTable></UserTable>

@@ -37,3 +37,6 @@ Route::post('/add-user', ['middleware' => 'auth', 'uses' => 'UserController@stor
 
 // GETTING USER INFORMATION FOR EDITTING
 Route::post('/getInforUser', ['middleware' => 'auth', 'uses' => 'UserController@edit'])->name('getUserInfo');
+
+// GETTING CHART DATA AT HOME PAGE
+Route::get('/get-data-chart', ['middleware' => 'auth', 'uses' => 'UserController@getDataChart'])->name('getChartData');

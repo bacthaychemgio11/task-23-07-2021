@@ -34,8 +34,6 @@ class UserController extends Controller
     }
 
     // GET ALL USER HAD LEVEL LOWER THAN CURRENT USER'S LEVEL
-    // ALSO SEND NUMBERS OF USER OF EACH LEVEL
-    // UPDATE FUCTION AT 17/08/2021
     public function getUsers()
     {
         //get current level of logged in User
@@ -44,11 +42,19 @@ class UserController extends Controller
         //get all user that has level lower than current level
         $data = DB::table('users')->where('level', '<', $currentlevel)->orderBy('id', 'asc')->get();
 
+        // return response in json type
+        return response()->json(['data' => $data], 200);
+    }
+
+    // SEND NUMBERS OF USER OF EACH LEVEL
+    // UPDATE FUCTION AT 17/08/2021
+    public function getDataChart()
+    {
         //GET NUMBERS OF USER OF EACH LEVEL
-        $chartData = DB::table('users')->select(DB::raw('level, count(*) as value'))->groupBy('level')->get();
+        $chartData = DB::table('users')->select(DB::raw('level, count(*) as value'))->orderBy('level', 'desc')->groupBy('level')->get();
 
         // return response in json type
-        return response()->json(['data' => $data, 'chartData' => $chartData], 200);
+        return response()->json(['chartData' => $chartData], 200);
     }
 
     /**

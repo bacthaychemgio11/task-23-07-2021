@@ -3,12 +3,12 @@ import { Bar } from '@ant-design/charts';
 
 function ChartLevelCount() {
     // ACTUAL DATA
-    const [dataUser, setDataUser] = useState([]);
+    const [dataChart, setDataChart] = useState([]);
 
     //FUNCTION TO SEND REQUEST TO GET ALL USER
     async function sendRequest() {
 
-        const result = await fetch('/get-users', {
+        const result = await fetch('/get-data-chart', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
@@ -21,11 +21,11 @@ function ChartLevelCount() {
 
     useEffect(async () => {
         const getData = await sendRequest();
-        setDataUser(getData.chartData);
+        setDataChart(getData.chartData);
     }, []);
 
     var config = {
-        data: dataUser.reverse(),
+        data: dataChart,
         xField: 'value',
         yField: 'level',
         seriesField: 'level',
