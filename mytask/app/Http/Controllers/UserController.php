@@ -47,14 +47,18 @@ class UserController extends Controller
     }
 
     // SEND NUMBERS OF USER OF EACH LEVEL
-    // UPDATE FUCTION AT 17/08/2021
+    // ALSO SEND USER INFORMATION
+    // UPDATE FUCTION AT 19/08/2021
     public function getDataChart()
     {
         //GET NUMBERS OF USER OF EACH LEVEL
         $chartData = DB::table('users')->select(DB::raw('level, count(*) as value'))->orderBy('level', 'desc')->groupBy('level')->get();
 
+        // USER INFORMATION
+        $userInfor = Auth::user();
+
         // return response in json type
-        return response()->json(['chartData' => $chartData], 200);
+        return response()->json(['chartData' => $chartData, 'userInfo' => $userInfor], 200);
     }
 
     /**

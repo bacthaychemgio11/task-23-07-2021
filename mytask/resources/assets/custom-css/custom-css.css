@@ -174,29 +174,30 @@
   box-shadow: #d187af 300px 0 0 0 inset;
 }
 
-.inforContainer{
+.inforContainer {
   position: relative;
-  min-height: 400px;
+  height: 400px;
   width: 100%;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  perspective: 1000px;
 }
 
-.inforContainerDecoration{
+.inforContainerDecoration {
   position: absolute;
   filter: blur(150px);
 }
 
-.inforContainer .inforContainerDecoration:nth-child(1){
+.inforContainer .inforContainerDecoration:nth-child(1) {
   top: -50px;
   width: 200px;
   height: 200px;
   background: #669c61;
 }
 
-.inforContainer .inforContainerDecoration:nth-child(2){
+.inforContainer .inforContainerDecoration:nth-child(2) {
   bottom: -100px;
   right: 0;
   width: 200px;
@@ -204,7 +205,7 @@
   background: #c75e96;
 }
 
-.inforContainer .inforContainerDecoration:nth-child(3){
+.inforContainer .inforContainerDecoration:nth-child(3) {
   bottom: 100px;
   left: 90px;
   width: 200px;
@@ -212,6 +213,142 @@
   background: #9de73b;
 }
 
-.inforCard{
+.inforCard {
+  position: relative;
+  width: 400px;
+  height: 250px;
+  box-shadow: 3px 5px 8px rgb(114, 111, 111);
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease-in-out;
+}
 
+.inforCard > .frontFace,
+.inforCard > .backFace {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgb(226, 220, 220);
+  backface-visibility: hidden;
+}
+
+.inforCard .backFace {
+  transform: rotateY(180deg);
+  padding: 30px 30px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.inforCard .frontFace .inforCardDeco1 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 220px;
+  height: 220px;
+  clip-path: circle(50% at 76% 85%);
+  background: linear-gradient(
+    180deg,
+    rgba(102, 156, 97, 0.6),
+    rgb(65, 109, 62)
+  );
+}
+
+.inforCard .frontFace .name {
+  color: rgb(71, 66, 66);
+  font-size: 1.8rem;
+  font-weight: 700;
+  width: 180px;
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  text-align: left;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.longText {
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+}
+
+.inforCard .frontFace .logo,
+.inforCard .backFace .logo {
+  color: #c75e96;
+  font-size: 5rem;
+  width: auto;
+  height: auto;
+}
+
+.inforCard .frontFace .logo {
+  font-size: 4rem;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+.inforCard .frontFace .website {
+  color: #dddddd;
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.inforCard .frontFace .website h4 {
+  color: #dddddd;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.inforCard:hover {
+  transform: rotateY(180deg);
+}
+
+.backFace .title {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.backFace .title .titleLeft {
+  width: 75%;
+}
+
+.backFace .title .titleRight {
+  width: 20%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.backFace .title .titleLeft .customerName {
+  color: rgb(56, 54, 54);
+  font-size: 2rem;
+  text-transform: capitalize;
+  text-align: left;
+}
+
+.backFace .title .titleLeft h3 {
+  margin-bottom: 2px;
+}
+
+.greenTitle {
+  color: #669c61;
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.backFace .infor {
+  color: #669c61;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: 600;
 }

@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu } from 'antd';
 import {
     AppstoreOutlined,
@@ -17,8 +17,33 @@ import InforAndStatistic from './InforAndStatistic.js';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-if (document.getElementById('layout')) {
-    ReactDOM.render(
+
+function CustomLayout() {
+    // ACTUAL DATA
+    const [dataChart, setDataChart] = useState([]);
+    const [dataUser, setDataUser] = useState([]);
+
+    //FUNCTION TO SEND REQUEST TO GET ALL USER
+    async function sendRequest() {
+
+        const result = await fetch('/get-data-chart', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Accept': 'application/json;charset=UTF-8'
+            },
+        });
+
+        return result.json();
+    }
+
+    useEffect(async () => {
+        const getData = await sendRequest();
+        setDataChart(getData.chartData);
+        setDataUser(getData.userInfo);
+    }, []);
+
+    return (
         <Layout>
             <Sider
                 style={{
@@ -66,11 +91,11 @@ if (document.getElementById('layout')) {
                         <div className='chartAndInfor'>
                             <div className='chartContainer'>
                                 <h3 style={{ 'padding': '10px 0' }}>Users Statistic By Level</h3>
-                                <ChartLevelCount></ChartLevelCount>
+                                <ChartLevelCount dataChart={dataChart}></ChartLevelCount>
                             </div>
 
                             <div className='userInforContainer'>
-                                <InforAndStatistic></InforAndStatistic>
+                                <InforAndStatistic userInfor={dataUser}></InforAndStatistic>
                             </div>
                         </div>
                         <UserTable></UserTable>
@@ -78,7 +103,16 @@ if (document.getElementById('layout')) {
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Ho Si Hung's Task</Footer>
             </Layout>
-        </Layout>,
+        </Layout>
+    )
+}
+
+export default CustomLayout
+
+if (document.getElementById('layout')) {
+    ReactDOM.render(
+        <CustomLayout></CustomLayout>
+        ,
         document.getElementById('layout'),
     );
 }
