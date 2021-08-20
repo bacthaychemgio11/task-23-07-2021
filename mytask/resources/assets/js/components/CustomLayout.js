@@ -14,18 +14,21 @@ import {
 import UserTable from './UserTable.js';
 import ChartLevelCount from './ChartLevelCount.js';
 import InforAndStatistic from './InforAndStatistic.js';
+import ContractsTable from './ContractsTable.js';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 
 function CustomLayout() {
+    const tableName = ['users', 'contracts'];
     // ACTUAL DATA
     const [dataChart, setDataChart] = useState([]);
     const [dataUser, setDataUser] = useState([]);
+    const [dataContracts, setDataContracts] = useState([]);
+    const [tableDisplay, setTableDisplay] = useState(tableName[0]);
 
     //FUNCTION TO SEND REQUEST TO GET ALL USER
     async function sendRequest() {
-
         const result = await fetch('/get-data-chart', {
             method: 'GET',
             headers: {
@@ -37,10 +40,45 @@ function CustomLayout() {
         return result.json();
     }
 
+    // FUNCTION TO GET ALL CONTRACTS OF USERS
+    async function getAllContractsOfUser() {
+        const result = await fetch('/get-contracts-user', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Accept': 'application/json;charset=UTF-8'
+            },
+        });
+
+        return result.json();
+    }
+
+    // FUNCTION TO CHANGE DISPLAY TABLE
+    function setDisplayTable(name) {
+        setTableDisplay(name);
+    }
+
+    function renderTable(name) {
+        switch (name) {
+            case tableName[0]:
+                return <UserTable></UserTable>;
+                break;
+            case tableName[1]:
+                return <ContractsTable contractsData={dataContracts}></ContractsTable>
+                break;
+            default:
+                break;
+        }
+    }
+
     useEffect(async () => {
         const getData = await sendRequest();
         setDataChart(getData.chartData);
         setDataUser(getData.userInfo);
+
+        const contractsOfUser = await getAllContractsOfUser()
+        setDataContracts(contractsOfUser.dataContracts);
+        console.log(dataContracts);
     }, []);
 
     return (
@@ -59,10 +97,10 @@ function CustomLayout() {
                         <a href="#" data-toggle="modal" data-target="#modelAddUser">Add new user</a>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-                        nav 2
+                        <a href="#" onClick={() => { setDisplayTable(tableName[0]) }}>Users List</a>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UploadOutlined />}>
-                        nav 3
+                        <a href="#" onClick={() => { setDisplayTable(tableName[1]) }}>Your Contracts</a>
                     </Menu.Item>
                     <Menu.Item key="4" icon={<BarChartOutlined />}>
                         nav 4
@@ -83,7 +121,7 @@ function CustomLayout() {
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200 }}>
                 <Header className="site-layout-background" style={{ padding: 0 }}>
-                    <h2>USER LIST</h2>
+                    <h2>INVEST.COM</h2>
                 </Header>
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                     <div className="site-layout-background" style={{ padding: 24, textAlign: 'center' }}>
@@ -98,7 +136,7 @@ function CustomLayout() {
                                 <InforAndStatistic userInfor={dataUser}></InforAndStatistic>
                             </div>
                         </div>
-                        <UserTable></UserTable>
+                        {renderTable(tableDisplay)}
                     </div>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>Ho Si Hung's Task</Footer>

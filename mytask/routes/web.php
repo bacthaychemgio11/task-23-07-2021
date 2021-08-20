@@ -40,3 +40,6 @@ Route::post('/getInforUser', ['middleware' => 'auth', 'uses' => 'UserController@
 
 // GETTING CHART DATA AT HOME PAGE
 Route::get('/get-data-chart', ['middleware' => 'auth', 'uses' => 'UserController@getDataChart'])->name('getChartData');
+
+// GETTING CONTRACTS DATA AT HOME PAGE FOR USER
+Route::get('/get-contracts-user', ['middleware' => 'auth', 'uses' => 'ContractController@getContractsOfUser'])->name('getContractsForUser');
